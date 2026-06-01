@@ -1,0 +1,82 @@
+---
+import '../styles/faq.css';
+---
+
+<section class="section faq" id="faq">
+  <div class="container">
+    <h2 class="section-title">Preguntas frecuentes</h2>
+    <p class="section-subtitle">Respondemos lo que más nos preguntan. Si quedó alguna duda, no dudes en contactarnos.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>¿Puedo cancelar mi suscripción?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <p>Sí, podés cancelarla en cualquier momento desde tu perfil o escribiéndonos. Sin compromisos ni vueltas. Solo te pedimos hacerlo con al menos 5 días de anticipación al próximo box.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>¿Qué incluye la suscripción?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <p>Cada mes recibís una caja con una selección rotativa de quesos, salames y embutidos artesanales, acompañamientos curados y una ficha de maridaje con recomendaciones.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>¿Cuándo se hacen las entregas?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <p>Las entregas se realizan la segunda semana de cada mes. El cierre de pedidos es el día 10 del mes anterior, y coordinamos la entrega según tu zona para garantizar la cadena de frío.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>¿Qué formas de pago aceptan?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <p>Aceptamos tarjetas de crédito y débito (Visa, Mastercard, American Express), transferencia bancaria y Mercado Pago. Podés pagar en cuotas sin interés.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>¿Hacen entregas a todo el país?</span>
+          <span class="faq-icon"></span>
+        </button>
+        <div class="faq-answer">
+          <p>Sí, llegamos a todo el territorio argentino a través de nuestro servicio de logística refrigerada. El costo de envío varía según la zona, y en CABA y GBA tenemos precio especial.</p>
+        </div>
+      </div>
+    </div>
+    <div class="faq-cta">
+      <p>¿Tenés otra consulta?</p>
+      <a href="mailto:hello@clubsalamero.com" class="btn btn-primary">Escribinos un email</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const questions = document.querySelectorAll('.faq-question');
+
+    questions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        questions.forEach(q => {
+          q.setAttribute('aria-expanded', 'false');
+          q.nextElementSibling.style.maxHeight = '0';
+        });
+        if (!isOpen) {
+          btn.setAttribute('aria-expanded', 'true');
+          const answer = btn.nextElementSibling;
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,100 @@
+---
+import '../styles/hero.css';
+---
+
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <div class="hero-text">
+      <span class="hero-badge">
+        <i class="fas fa-calendar-alt"></i> Próximo box cierra el 10 de cada mes
+      </span>
+      <h1>La picada artesanal <br />en tu casa, <span>todos los meses</span></h1>
+      <p>
+        Una caja curada con quesos y embutidos artesanales de pequeños
+        productores argentinos. Sabores que no encontrás en el súper,
+        seleccionados a mano.
+      </p>
+      <div class="hero-actions">
+        <a href="#planes" class="btn btn-primary">
+          Elegí tu plan <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="#como-funciona" class="btn btn-outline-light">
+          Ver cómo funciona
+        </a>
+      </div>
+      <div class="hero-meta" id="hero-meta">
+        <div class="meta-item">
+          <span class="meta-number" data-target="25" data-prefix="+">0</span>
+          <span class="meta-label">Productores</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-number" data-target="12">0</span>
+          <span class="meta-label">Sabores únicos</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-number" data-target="8">0</span>
+          <span class="meta-label">Provincias</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-img-placeholder">
+        <i class="fas fa-plate-wheat"></i>
+        <span>Picada Artesanal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const meta = document.getElementById('hero-meta');
+    if (!meta) return;
+
+    const counters = meta.querySelectorAll('[data-target]');
+    let animated = false;
+    const duration = 2000;
+
+    function animateCounters() {
+      if (animated) return;
+      animated = true;
+
+      counters.forEach(counter => {
+        const target = parseInt(counter.dataset.target);
+        const prefix = counter.dataset.prefix || '';
+        const start = performance.now();
+
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(eased * target);
+
+          counter.textContent = prefix + current;
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            counter.textContent = prefix + target;
+          }
+        }
+
+        requestAnimationFrame(update);
+      });
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(meta);
+  });
+</script>
