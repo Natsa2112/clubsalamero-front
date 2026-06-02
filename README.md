@@ -1,46 +1,85 @@
-# Astro Starter Kit: Basics
+# Club Salamero Front
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Landing page de **Club Salamero** — servicio de suscripción de picadas artesanales argentinas. Construido con [Astro](https://astro.build) 6, CSS nativo y JavaScript vanilla.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Estructura del proyecto
 
 ```text
 /
 ├── public/
+│   ├── favicon.ico
 │   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── src/
+│   ├── assets/
+│   │   └── images/
+│   │       ├── caja.avif
+│   │       └── picada.avif
+│   ├── components/
+│   │   ├── BoxContents.astro
+│   │   ├── FAQ.astro
+│   │   ├── Features.astro
+│   │   ├── Footer.astro
+│   │   ├── Header.astro
+│   │   ├── Hero.astro
+│   │   ├── HowItWorks.astro
+│   │   ├── Plans.astro
+│   │   ├── Producers.astro
+│   │   ├── Products.astro
+│   │   └── Testimonials.astro
+│   ├── layouts/
+│   │   └── Layout.astro
+│   ├── pages/
+│   │   └── index.astro
+│   └── styles/
+│       ├── box-contents.css
+│       ├── faq.css
+│       ├── features.css
+│       ├── footer.css
+│       ├── global.css
+│       ├── header.css
+│       ├── hero.css
+│       ├── how-it-works.css
+│       ├── plans.css
+│       ├── producers.css
+│       ├── products.css
+│       └── testimonials.css
+├── astro.config.mjs
+├── details.md
+├── package.json
+├── pnpm-workspace.yaml
+├── todo.md
+└── tsconfig.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Secciones del sitio
 
-## 🧞 Commands
+| Sección      | Componente           | Descripción                                   |
+|--------------|----------------------|-----------------------------------------------|
+| Header       | `Header.astro`       | Navbar fija con menú hamburguesa responsive   |
+| Hero         | `Hero.astro`         | Portada con CTA, badges y contadores animados |
+| Features     | `Features.astro`     | Grid "Por qué elegirnos"                      |
+| Products     | `Products.astro`     | Galería "Box de este mes"                     |
+| Plans        | `Plans.astro`        | 3 planes de suscripción                       |
+| Box Contents | `BoxContents.astro`  | "Qué viene en la caja"                        |
+| How It Works | `HowItWorks.astro`   | Timeline "Cómo funciona"                      |
+| Producers    | `Producers.astro`    | Tarjetas de productores                       |
+| Testimonials | `Testimonials.astro` | Slider de testimonios                         |
+| FAQ          | `FAQ.astro`          | Acordeón de preguntas frecuentes              |
+| Footer       | `Footer.astro`       | Footer con CTA y links                        |
 
-All commands are run from the root of the project, from a terminal:
+## Comandos
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+| Comando | Acción |
+|---------|--------|
+| `pnpm install` | Instala dependencias |
+| `pnpm dev` | Inicia servidor local en `localhost:4321` |
+| `pnpm build` | Build producción en `./dist/` |
+| `pnpm preview` | Previsualiza build local |
 
-## 👀 Want to learn more?
+## Stack
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Framework:** Astro 6 (SSG)
+- **Estilos:** CSS nativo con custom properties
+- **Fuentes:** Playfair Display + Inter (Google Fonts)
+- **Iconos:** Font Awesome 6.5.1
+- **JS:** Solo vanilla (sin frameworks de frontend)

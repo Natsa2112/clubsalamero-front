@@ -34,3 +34,7 @@ pnpm-debug.log*
 # deployment directories
 .vercel/
 .netlify/
+
+# Proyect Details
+details.md
+todo.md
