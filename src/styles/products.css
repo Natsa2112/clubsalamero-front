@@ -1,11 +1,44 @@
 .products {
   background: var(--color-bg-alt);
+  position: relative;
 }
 
-.products-grid {
+.products-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.products-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 168, 83, 0.15);
+  color: var(--color-primary);
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.2rem;
+  border: 1px solid rgba(212, 168, 83, 0.35);
+}
+
+.products-eyebrow i {
+  color: var(--color-accent);
+}
+
+.products-bento {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1rem;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 .product-card {
@@ -13,9 +46,11 @@
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor: pointer;
   border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .product-card:hover {
@@ -23,27 +58,226 @@
   box-shadow: var(--shadow-md);
 }
 
-.product-img {
-  aspect-ratio: 1;
-  background: linear-gradient(145deg, #EDE5DC, #D4C8BC);
+.product-visual {
+  position: relative;
+  aspect-ratio: 16 / 11;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: var(--color-primary-light);
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.product-tag {
-  display: block;
-  padding: 0.8rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-align: center;
+.product-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 60%);
+  pointer-events: none;
+}
+
+.product-visual i {
+  font-size: 2.4rem;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-visual i {
+  transform: scale(1.1);
+}
+
+.product-card--featured {
+  height: 100%;
+}
+
+.product-card--featured .product-visual {
+  aspect-ratio: 16 / 10;
+  min-height: 260px;
+}
+
+.product-card--featured .product-visual i {
+  font-size: 4.5rem;
+}
+
+.product-star-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(44, 24, 16, 0.85);
+  color: var(--color-accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(6px);
+  z-index: 2;
+}
+
+.product-info {
+  padding: 1.2rem 1.3rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.product-card--featured .product-info {
+  padding: 1.6rem 1.6rem 1.7rem;
+  gap: 0.6rem;
+}
+
+.product-category {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+}
+
+.product-category--embutidos {
+  background: rgba(92, 46, 30, 0.12);
+  color: var(--color-primary);
+}
+
+.product-category--quesos {
+  background: rgba(212, 168, 83, 0.18);
+  color: #8B6A2A;
+}
+
+.product-category--acompaniamientos {
+  background: rgba(90, 122, 74, 0.18);
+  color: var(--color-secondary);
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--color-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.product-card--featured .product-name {
+  font-size: 1.6rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.product-description {
+  font-size: 0.88rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.product-card--small .product-description {
+  display: none;
+}
+
+.product-origin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+
+.product-origin i {
+  color: var(--color-accent);
+  font-size: 0.85rem;
+}
+
+.product-visual--embutidos {
+  background: linear-gradient(135deg, #5C2E1E 0%, #7A3E2A 100%);
+  color: var(--color-accent);
+}
+
+.product-visual--quesos {
+  background: linear-gradient(135deg, #E0C078 0%, #D4A853 100%);
+  color: var(--color-bg-dark);
+}
+
+.product-visual--acompaniamientos {
+  background: linear-gradient(135deg, #5A7A4A 0%, #6D8F5D 100%);
+  color: var(--color-white);
+}
+
+@media (max-width: 1024px) {
+  .products-bento {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card--featured .product-visual {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-bento {
+    gap: 1.25rem;
+  }
+
+  .product-list {
+    gap: 1rem;
+  }
+
+  .product-card--featured .product-visual {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
+
+  .product-card--featured .product-info {
+    padding: 1.3rem 1.3rem 1.4rem;
+  }
+
+  .product-card--featured .product-name {
+    font-size: 1.35rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .product-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .product-info {
+    padding: 0.9rem 1rem 1rem;
+    gap: 0.3rem;
+  }
+
+  .product-name {
+    font-size: 0.92rem;
+  }
+
+  .product-origin {
+    font-size: 0.72rem;
+  }
+
+  .product-origin span,
+  .product-origin {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  .product-list {
+    grid-template-columns: 1fr;
   }
 }
