@@ -2,44 +2,50 @@
 import '../styles/testimonials.css';
 ---
 
-<section class="section testimonials" id="testimonios">
+<section class="section testimonials" id="testimonios" aria-roledescription="carousel" aria-label="Testimonios de socios">
   <div class="container">
     <h2 class="section-title">Lo que dicen nuestros socios</h2>
-    <div class="testimonials-slider" id="testimonials-slider">
+    <div class="testimonials-slider" id="testimonials-slider"
+         aria-live="polite"
+         tabindex="0"
+         onmouseenter="this.dataset.paused='true'"
+         onmouseleave="this.dataset.paused='false'"
+         onfocusin="this.dataset.paused='true'"
+         onfocusout="this.dataset.paused='false'">
       <div class="testimonial-track" id="testimonial-track">
-        <div class="testimonial-card">
-          <div class="testimonial-stars">
-            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <div class="testimonial-card" role="group" aria-roledescription="slide" aria-label="1 de 3">
+          <div class="testimonial-stars" aria-label="5 estrellas">
+            <i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i>
           </div>
           <blockquote>"La mejor picada que probé en mi vida. El packaging es impecable y todo llegó perfecto. Ya no puedo volver al salame del súper."</blockquote>
           <div class="testimonial-author">
-            <div class="author-avatar">M</div>
+            <div class="author-avatar" aria-hidden="true">M</div>
             <div>
               <strong>Martín Gelberg</strong>
               <span>Suscriptor desde julio 2025</span>
             </div>
           </div>
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">
-            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <div class="testimonial-card" role="group" aria-roledescription="slide" aria-label="2 de 3">
+          <div class="testimonial-stars" aria-label="5 estrellas">
+            <i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i>
           </div>
           <blockquote>"Increíble la calidad de los productos. Cada caja es una sorpresa distinta y la ficha de maridaje vale oro."</blockquote>
           <div class="testimonial-author">
-            <div class="author-avatar">S</div>
+            <div class="author-avatar" aria-hidden="true">S</div>
             <div>
               <strong>Sebastián González</strong>
               <span>Suscriptor desde agosto 2025</span>
             </div>
           </div>
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">
-            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <div class="testimonial-card" role="group" aria-roledescription="slide" aria-label="3 de 3">
+          <div class="testimonial-stars" aria-label="5 estrellas">
+            <i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i>
           </div>
           <blockquote>"Se lo regalé a mi viejo y terminamos los dos suscriptos. Productores que jamás hubiéramos descubierto solos."</blockquote>
           <div class="testimonial-author">
-            <div class="author-avatar">N</div>
+            <div class="author-avatar" aria-hidden="true">N</div>
             <div>
               <strong>Noelia Matias</strong>
               <span>Suscriptora desde septiembre 2025</span>
@@ -48,36 +54,54 @@ import '../styles/testimonials.css';
         </div>
       </div>
     </div>
-    <div class="slider-dots" id="slider-dots">
-      <span class="dot active" data-index="0"></span>
-      <span class="dot" data-index="1"></span>
-      <span class="dot" data-index="2"></span>
+    <div class="slider-dots" id="slider-dots" role="tablist" aria-label="Seleccionar testimonio">
+      <button class="dot active" type="button" data-index="0" role="tab" aria-selected="true" aria-label="Testimonio 1"></button>
+      <button class="dot" type="button" data-index="1" role="tab" aria-selected="false" aria-label="Testimonio 2"></button>
+      <button class="dot" type="button" data-index="2" role="tab" aria-selected="false" aria-label="Testimonio 3"></button>
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const track = document.getElementById('testimonial-track');
-    const dots = document.querySelectorAll('.dot');
+  const track = document.getElementById('testimonial-track');
+  const slider = document.getElementById('testimonials-slider');
+  const dots = document.querySelectorAll<HTMLButtonElement>('.dot');
+
+  if (track && dots.length) {
     let currentIndex = 0;
     const totalSlides = dots.length;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function goToSlide(index) {
-      currentIndex = index;
-      track.style.transform = `translateX(-${index * 100}%)`;
-      dots.forEach(d => d.classList.remove('active'));
-      dots[index].classList.add('active');
-    }
+    const goToSlide = (index: number) => {
+      currentIndex = (index + totalSlides) % totalSlides;
+      track.style.transform = `translate3d(-${currentIndex * 100}%, 0, 0)`;
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === currentIndex);
+        d.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+      });
+    };
 
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
-        goToSlide(parseInt(dot.dataset.index));
+        goToSlide(parseInt(dot.dataset.index ?? '0', 10));
       });
     });
 
-    setInterval(() => {
-      goToSlide((currentIndex + 1) % totalSlides);
-    }, 5000);
-  });
+    if (!reduceMotion) {
+      const advance = () => {
+        const paused = slider?.dataset.paused === 'true' || document.hidden;
+        if (!paused) goToSlide(currentIndex + 1);
+      };
+      const id = window.setInterval(advance, 5000);
+
+      document.addEventListener('visibilitychange', advance);
+
+      window.addEventListener('beforeunload', () => window.clearInterval(id));
+    }
+
+    slider?.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
+      else if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
+    });
+  }
 </script>

@@ -23,6 +23,14 @@
   box-shadow: 0 4px 20px rgba(212, 168, 83, 0.12);
 }
 
+.faq-heading {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
 .faq-question {
   width: 100%;
   display: flex;
@@ -91,7 +99,13 @@
 .faq-answer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.faq-answer.is-open {
+  max-height: 600px;
+  opacity: 1;
 }
 
 .faq-answer p {

@@ -7,11 +7,17 @@
   margin: 0 auto;
   overflow: hidden;
   border-radius: var(--radius);
+  outline: none;
+}
+
+.testimonials-slider:focus-visible {
+  box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.5);
 }
 
 .testimonial-track {
   display: flex;
   transition: transform 0.5s ease;
+  will-change: transform;
 }
 
 .testimonial-card {
@@ -87,9 +93,16 @@
   border-radius: 50%;
   background: var(--color-border);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
+  border: none;
+  padding: 0;
+}
+
+.dot:hover {
+  background: rgba(212, 168, 83, 0.5);
 }
 
 .dot.active {
   background: var(--color-accent);
+  transform: scale(1.2);
 }

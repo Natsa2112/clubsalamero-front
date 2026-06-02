@@ -8,47 +8,57 @@ import '../styles/faq.css';
     <p class="section-subtitle">Respondemos lo que más nos preguntan. Si quedó alguna duda, no dudes en contactarnos.</p>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>¿Puedo cancelar mi suscripción?</span>
-          <span class="faq-icon"></span>
-        </button>
-        <div class="faq-answer">
+        <h3 class="faq-heading">
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-1">
+            <span>¿Puedo cancelar mi suscripción?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq-answer" id="faq-1" role="region" hidden>
           <p>Sí, podés cancelarla en cualquier momento desde tu perfil o escribiéndonos. Sin compromisos ni vueltas. Solo te pedimos hacerlo con al menos 5 días de anticipación al próximo box.</p>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>¿Qué incluye la suscripción?</span>
-          <span class="faq-icon"></span>
-        </button>
-        <div class="faq-answer">
+        <h3 class="faq-heading">
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-2">
+            <span>¿Qué incluye la suscripción?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq-answer" id="faq-2" role="region" hidden>
           <p>Cada mes recibís una caja con una selección rotativa de quesos, salames y embutidos artesanales, acompañamientos curados y una ficha de maridaje con recomendaciones.</p>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>¿Cuándo se hacen las entregas?</span>
-          <span class="faq-icon"></span>
-        </button>
-        <div class="faq-answer">
+        <h3 class="faq-heading">
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-3">
+            <span>¿Cuándo se hacen las entregas?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq-answer" id="faq-3" role="region" hidden>
           <p>Las entregas se realizan la segunda semana de cada mes. El cierre de pedidos es el día 10 del mes anterior, y coordinamos la entrega según tu zona para garantizar la cadena de frío.</p>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>¿Qué formas de pago aceptan?</span>
-          <span class="faq-icon"></span>
-        </button>
-        <div class="faq-answer">
+        <h3 class="faq-heading">
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-4">
+            <span>¿Qué formas de pago aceptan?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq-answer" id="faq-4" role="region" hidden>
           <p>Aceptamos tarjetas de crédito y débito (Visa, Mastercard, American Express), transferencia bancaria y Mercado Pago. Podés pagar en cuotas sin interés.</p>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>¿Hacen entregas a todo el país?</span>
-          <span class="faq-icon"></span>
-        </button>
-        <div class="faq-answer">
+        <h3 class="faq-heading">
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-5">
+            <span>¿Hacen entregas a todo el país?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq-answer" id="faq-5" role="region" hidden>
           <p>Sí, llegamos a todo el territorio argentino a través de nuestro servicio de logística refrigerada. El costo de envío varía según la zona, y en CABA y GBA tenemos precio especial.</p>
         </div>
       </div>
@@ -61,22 +71,32 @@ import '../styles/faq.css';
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const questions = document.querySelectorAll('.faq-question');
+  const questions = document.querySelectorAll<HTMLButtonElement>('.faq-question');
 
-    questions.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const isOpen = btn.getAttribute('aria-expanded') === 'true';
-        questions.forEach(q => {
-          q.setAttribute('aria-expanded', 'false');
-          q.nextElementSibling.style.maxHeight = '0';
-        });
-        if (!isOpen) {
-          btn.setAttribute('aria-expanded', 'true');
-          const answer = btn.nextElementSibling;
-          answer.style.maxHeight = answer.scrollHeight + 'px';
-        }
+  questions.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      const answerId = btn.getAttribute('aria-controls');
+      const answer = answerId ? document.getElementById(answerId) : null;
+
+      questions.forEach(q => {
+        if (q === btn) return;
+        q.setAttribute('aria-expanded', 'false');
+        const otherId = q.getAttribute('aria-controls');
+        const other = otherId ? document.getElementById(otherId) : null;
+        other?.classList.remove('is-open');
+        if (other) other.hidden = true;
       });
+
+      if (!isOpen && answer) {
+        btn.setAttribute('aria-expanded', 'true');
+        answer.hidden = false;
+        answer.classList.add('is-open');
+      } else {
+        btn.setAttribute('aria-expanded', 'false');
+        answer?.classList.remove('is-open');
+        if (answer) answer.hidden = true;
+      }
     });
   });
 </script>

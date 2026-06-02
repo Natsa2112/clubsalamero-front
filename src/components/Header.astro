@@ -5,15 +5,22 @@ import '../styles/header.css';
 <header class="header">
   <div class="container header-inner">
     <a href="/" class="logo">
-      <i class="fas fa-utensils"></i>
+      <i class="fas fa-utensils" aria-hidden="true"></i>
       <span>Club Salamero</span>
     </a>
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+    <button
+      class="hamburger"
+      id="hamburger"
+      type="button"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="nav"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" aria-label="Navegación principal">
       <ul class="nav-list">
         <li><a href="#planes">Planes</a></li>
         <li><a href="#como-funciona">Cómo funciona</a></li>
@@ -26,23 +33,66 @@ import '../styles/header.css';
 </header>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const hamburger = document.getElementById('hamburger');
-    const nav = document.getElementById('nav');
-    const links = nav.querySelectorAll('a');
+  const hamburger = document.getElementById('hamburger');
+  const nav = document.getElementById('nav');
+
+  if (hamburger && nav) {
+    const focusableSelector =
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const links = nav.querySelectorAll<HTMLElement>(focusableSelector);
+
+    const open = () => {
+      hamburger!.classList.add('active');
+      nav.classList.add('active');
+      hamburger!.setAttribute('aria-expanded', 'true');
+      hamburger!.setAttribute('aria-label', 'Cerrar menú');
+      document.body.classList.add('no-scroll');
+      const first = links[0] as HTMLElement | undefined;
+      first?.focus();
+    };
+
+    const close = (restoreFocus = true) => {
+      hamburger!.classList.remove('active');
+      nav.classList.remove('active');
+      hamburger!.setAttribute('aria-expanded', 'false');
+      hamburger!.setAttribute('aria-label', 'Abrir menú');
+      document.body.classList.remove('no-scroll');
+      if (restoreFocus) hamburger!.focus();
+    };
 
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      nav.classList.toggle('active');
-      document.body.classList.toggle('no-scroll');
+      const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+      isOpen ? close() : open();
     });
 
     links.forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        nav.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-      });
+      link.addEventListener('click', () => close(false));
     });
-  });
+
+    document.addEventListener('keydown', event => {
+      if (hamburger.getAttribute('aria-expanded') !== 'true') return;
+      if (event.key === 'Escape') {
+        close();
+        return;
+      }
+      if (event.key === 'Tab') {
+        const items = Array.from(links);
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    const mq = window.matchMedia('(min-width: 769px)');
+    const onChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) close(false);
+    };
+    mq.addEventListener('change', onChange);
+  }
 </script>

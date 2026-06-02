@@ -1,5 +1,6 @@
 ---
 import '../styles/box-contents.css';
+import caja from '../assets/images/caja.avif';
 ---
 
 <section class="section box-contents" id="box">
@@ -8,10 +9,15 @@ import '../styles/box-contents.css';
     <p class="section-subtitle">Una experiencia gastronómica empaquetada con cariño. Cada box es una rotación nueva que cuenta una historia distinta cada mes.</p>
     <div class="box-grid">
       <div class="box-visual">
-        <div class="box-img-placeholder">
-          <i class="fas fa-gift"></i>
-          <span>Tu box del mes</span>
-        </div>
+        <img
+          class="box-img"
+          src={caja.src}
+          width={caja.width}
+          height={caja.height}
+          alt="Caja de suscripción Club Salamero con productos artesanales"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div class="box-items">
         <div class="box-item">

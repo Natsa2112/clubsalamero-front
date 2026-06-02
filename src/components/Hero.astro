@@ -1,15 +1,16 @@
 ---
 import '../styles/hero.css';
+import picada from '../assets/images/picada.avif';
 ---
 
 <section class="hero" id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-overlay"></div>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
   <div class="container hero-content">
     <div class="hero-text">
       <span class="hero-badge">
-        <i class="fas fa-calendar-alt"></i> Próximo box cierra el 10 de cada mes
+        <i class="fas fa-calendar-alt" aria-hidden="true"></i> Próximo box cierra el 10 de cada mes
       </span>
       <h1>La picada artesanal <br />en tu casa, <span>todos los meses</span></h1>
       <p>
@@ -19,7 +20,7 @@ import '../styles/hero.css';
       </p>
       <div class="hero-actions">
         <a href="#planes" class="btn btn-primary">
-          Elegí tu plan <i class="fas fa-arrow-right"></i>
+          Elegí tu plan <i class="fas fa-arrow-right" aria-hidden="true"></i>
         </a>
         <a href="#como-funciona" class="btn btn-outline-light">
           Ver cómo funciona
@@ -27,7 +28,7 @@ import '../styles/hero.css';
       </div>
       <div class="hero-meta" id="hero-meta">
         <div class="meta-item">
-          <span class="meta-number" data-target="25" data-prefix="+">0</span>
+          <span class="meta-number" data-target="25" data-prefix="+">+0</span>
           <span class="meta-label">Productores</span>
         </div>
         <div class="meta-item">
@@ -41,60 +42,77 @@ import '../styles/hero.css';
       </div>
     </div>
     <div class="hero-image">
-      <div class="hero-img-placeholder">
-        <i class="fas fa-plate-wheat"></i>
-        <span>Picada Artesanal</span>
-      </div>
+      <img
+        class="hero-img"
+        src={picada.src}
+        width={picada.width}
+        height={picada.height}
+        alt="Picada artesanal con quesos y embutidos de pequeños productores argentinos"
+        fetchpriority="high"
+        decoding="async"
+      />
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const meta = document.getElementById('hero-meta');
-    if (!meta) return;
+  const meta = document.getElementById('hero-meta');
+  if (meta) {
+    const counters = meta.querySelectorAll<HTMLElement>('[data-target]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const counters = meta.querySelectorAll('[data-target]');
-    let animated = false;
-    const duration = 2000;
-
-    function animateCounters() {
-      if (animated) return;
-      animated = true;
-
+    const setFinal = () => {
       counters.forEach(counter => {
-        const target = parseInt(counter.dataset.target);
-        const prefix = counter.dataset.prefix || '';
-        const start = performance.now();
+        const target = counter.dataset.target ?? '0';
+        const prefix = counter.dataset.prefix ?? '';
+        counter.textContent = prefix + target;
+      });
+    };
 
-        function update(now) {
-          const elapsed = now - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = Math.floor(eased * target);
+    if (reduceMotion) {
+      setFinal();
+    } else {
+      const duration = 2000;
+      const startedAt = { value: 0 };
+      let rafId = 0;
+      let played = false;
 
-          counter.textContent = prefix + current;
+      const tick = (now: number) => {
+        const elapsed = now - startedAt.value;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
 
-          if (progress < 1) {
-            requestAnimationFrame(update);
-          } else {
-            counter.textContent = prefix + target;
+        counters.forEach(counter => {
+          const target = parseInt(counter.dataset.target ?? '0', 10);
+          const prefix = counter.dataset.prefix ?? '';
+          counter.textContent = prefix + Math.floor(eased * target);
+        });
+
+        if (progress < 1) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          setFinal();
+        }
+      };
+
+      const play = () => {
+        if (played) return;
+        played = true;
+        startedAt.value = performance.now();
+        rafId = requestAnimationFrame(tick);
+      };
+
+      const observer = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            play();
+            observer.disconnect();
+            break;
           }
         }
+      }, { threshold: 0.4, rootMargin: '0px 0px -80px 0px' });
 
-        requestAnimationFrame(update);
-      });
+      observer.observe(meta);
     }
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounters();
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0.5 });
-
-    observer.observe(meta);
-  });
+  }
 </script>
