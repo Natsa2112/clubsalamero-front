@@ -6,7 +6,7 @@ interface Product {
   category: 'Embutidos' | 'Quesos' | 'Acompañamientos';
   origin: string;
   icon: string;
-  description: string;
+  description?: string;
   featured?: boolean;
 }
 
@@ -25,64 +25,53 @@ const products: Product[] = [
     category: 'Quesos',
     origin: 'Villa General Belgrano, Córdoba',
     icon: 'fa-cheese',
-    description: 'Ahumada en frío, ideal para llevar a la parrilla.',
   },
   {
     name: 'Queso de cabra patagónico',
     category: 'Quesos',
     origin: 'Trevelin, Chubut',
     icon: 'fa-cheese',
-    description: 'Madurado en cuevas naturales, sabor intenso.',
   },
   {
     name: 'Bondiola curada',
     category: 'Embutidos',
     origin: 'Mendoza',
     icon: 'fa-drumstick-bite',
-    description: 'Corte magro y sabroso, con un toque de pimentón ahumado.',
   },
   {
     name: 'Mortadela artesanal',
     category: 'Embutidos',
     origin: 'Mercedes, Buenos Aires',
     icon: 'fa-drumstick-bite',
-    description: 'Con pistachos y un toque de pimienta.',
   },
   {
     name: 'Camembert criollo',
     category: 'Quesos',
     origin: 'Suipacha, Buenos Aires',
     icon: 'fa-cheese',
-    description: 'Corteza florecida, maduración controlada.',
   },
   {
     name: 'Picadillo de campo',
     category: 'Acompañamientos',
     origin: 'Concordia, Entre Ríos',
     icon: 'fa-jar',
-    description: 'Carne magra condimentada, ideal para picar.',
   },
   {
     name: 'Brie con hierbas',
     category: 'Quesos',
     origin: 'Tandil, Buenos Aires',
     icon: 'fa-cheese',
-    description: 'Pasta blanda con romero y tomillo fresco.',
   },
   {
     name: 'Jamón crudo de altura',
     category: 'Embutidos',
     origin: 'Humahuaca, Jujuy',
     icon: 'fa-drumstick-bite',
-    description: 'Curado en los Valles Altos, con sal de la Puna.',
   },
 ];
 
-const categoryClass = (cat: Product['category']) =>
-  `product-category product-category--${cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(' ', '')}`;
-
-const visualClass = (cat: Product['category']) =>
-  `product-visual product-visual--${cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(' ', '')}`;
+const slug = (s: string) =>
+  s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(' ', '');
 
 const featured = products.find(p => p.featured)!;
 const others = products.filter(p => !p.featured);
@@ -92,7 +81,7 @@ const others = products.filter(p => !p.featured);
   <div class="container">
     <header class="products-header">
       <span class="products-eyebrow">
-        <i class="fas fa-gift" aria-hidden="true"></i> Box del mes · 9 productos
+        <i class="fas fa-gift" aria-hidden="true"></i> Box del mes · {products.length} productos
       </span>
       <h2 class="section-title">Ruta del Litoral</h2>
       <p class="section-subtitle">
@@ -102,14 +91,18 @@ const others = products.filter(p => !p.featured);
 
     <div class="products-bento">
       <article class="product-card product-card--featured">
-        <div class={visualClass(featured.category)}>
+        <div class={`product-visual product-visual--${slug(featured.category)}`}>
           <i class={`fas ${featured.icon}`} aria-hidden="true"></i>
-          <span class="product-star-badge">
-            <i class="fas fa-star" aria-hidden="true"></i> Estrella del mes
-          </span>
         </div>
         <div class="product-info">
-          <span class={categoryClass(featured.category)}>{featured.category}</span>
+          <div class="product-meta">
+            <span class={`product-category product-category--${slug(featured.category)}`}>
+              {featured.category}
+            </span>
+            <span class="product-featured-tag" aria-label="Producto destacado del mes">
+              <i class="fas fa-star" aria-hidden="true"></i> Destacado
+            </span>
+          </div>
           <h3 class="product-name">{featured.name}</h3>
           <p class="product-description">{featured.description}</p>
           <span class="product-origin">
@@ -120,12 +113,14 @@ const others = products.filter(p => !p.featured);
 
       <div class="product-list" role="list">
         {others.map(product => (
-          <article class="product-card product-card--small" role="listitem">
-            <div class={visualClass(product.category)}>
+          <article class="product-card" role="listitem">
+            <div class={`product-visual product-visual--${slug(product.category)}`}>
               <i class={`fas ${product.icon}`} aria-hidden="true"></i>
             </div>
             <div class="product-info">
-              <span class={categoryClass(product.category)}>{product.category}</span>
+              <span class={`product-category product-category--${slug(product.category)}`}>
+                {product.category}
+              </span>
               <h3 class="product-name">{product.name}</h3>
               <span class="product-origin">
                 <i class="fas fa-location-dot" aria-hidden="true"></i> {product.origin}
