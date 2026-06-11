@@ -119,16 +119,21 @@
 .footer-bottom {
   padding: 1.5rem 0;
   border-top: 1px solid rgba(245, 240, 235, 0.1);
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 1rem;
 }
 
 .footer-bottom p {
   font-size: 0.82rem;
   color: rgba(245, 240, 235, 0.4);
+  margin: 0;
 }
 
-.footer-love {
-  margin-top: 0.3rem;
+.footer-novacode {
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {

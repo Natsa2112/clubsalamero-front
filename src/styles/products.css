@@ -199,26 +199,26 @@
 }
 
 .product-visual--embutidos {
-  background: #5C2E1E;
+  background: var(--color-primary);
 }
 
 .product-visual--quesos {
-  background: #D4A853;
+  background: var(--color-accent);
   color: var(--color-bg-dark);
 }
 
 .product-visual--acompaniamientos {
-  background: #5A7A4A;
+  background: var(--color-secondary);
 }
 
 .product-category--embutidos {
-  background: rgba(92, 46, 30, 0.12);
+  background: rgba(75, 9, 20, 0.12);
   color: var(--color-primary);
 }
 
 .product-category--quesos {
-  background: rgba(212, 168, 153, 0.25);
-  color: #8B6A2A;
+  background: rgba(212, 168, 83, 0.25);
+  color: var(--color-accent);
 }
 
 .product-category--acompaniamientos {
